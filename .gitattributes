@@ -1,0 +1,37 @@
+# ============================================================
+#  行尾规则
+#
+#  为什么需要这个文件：
+#    本仓库以 Windows 侧（.bat）脚本为主，另含跨平台的 .py / .md / .yml。
+#    若 Windows 用户开着 core.autocrlf=true（本机就是），clone 出来的文本
+#    文件会变成 CRLF，跨平台工具读取时容易出错（例如 shell 报
+#    `$'\r': command not found`）。这里按类型钉死行尾，不再依赖各人本机
+#    的 git 配置。
+#    （原 Linux/WSL 侧的 .sh 脚本已随 WSL 方案移除，规则保留以备后用。）
+# ============================================================
+
+* text=auto
+
+# ---- 跨平台文本：必须是 LF ----
+*.sh            text eol=lf
+*.py            text eol=lf
+*.js            text eol=lf
+*.md            text eol=lf
+*.yml           text eol=lf
+*.yaml          text eol=lf
+*.txt           text eol=lf
+*.example       text eol=lf
+
+# ---- Windows 侧：CRLF ----
+*.bat           text eol=crlf
+*.bat.example   text eol=crlf
+
+# ---- 二进制：不碰 ----
+*.zip   binary
+*.7z    binary
+*.png   binary
+*.jpg   binary
+*.ico   binary
+*.db    binary
+*.pyd   binary
+*.exe   binary

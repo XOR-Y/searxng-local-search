@@ -1,0 +1,33 @@
+@echo off
+rem ============================================================
+rem  config.bat.example - local machine configuration TEMPLATE
+rem
+rem  How to use:
+rem    1. copy this file to  config.bat   (same folder)
+rem    2. edit the values below for your machine
+rem
+rem  config.bat is git-ignored, so your local settings never get
+rem  committed. searx.bat / fetch.bat load it automatically if it
+rem  exists.
+rem
+rem  Every value here has the same default baked into the Python
+rem  code, so config.bat is only needed when your setup differs.
+rem ============================================================
+
+rem ---------- SearXNG ----------
+rem Windows-native SearXNG install dir (contains run.bat / run.py).
+rem Used by searx.py to auto-start the server when it is not running.
+rem Default (see searx.py) = the searxng-official folder NEXT TO this repo.
+rem Set an absolute path here only if your install lives elsewhere.
+set "SEARXNG_DIR=%~dp0..\searxng-official"
+
+rem SearXNG endpoint (must match server.port in settings.yml)
+set "SEARXNG_URL=http://127.0.0.1:8888"
+
+rem Idle auto-exit timeout in seconds (0 = keep the server resident).
+rem The server exits after this many seconds without any request.
+set "SEARXNG_IDLE_TIMEOUT=900"
+
+rem ---------- proxy ----------
+rem Used for overseas sites (Clash). Set empty to always go direct.
+set "LOCAL_SEARCH_PROXY=http://127.0.0.1:7897"
