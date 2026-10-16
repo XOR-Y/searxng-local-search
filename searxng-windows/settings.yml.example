@@ -1,0 +1,76 @@
+# ============================================================
+#  SearXNG for Windows —— 配置模板
+#
+#  用法：复制成 settings.yml 再改
+#      copy settings.yml.example settings.yml
+#
+#  访问地址:  http://127.0.0.1:8888
+#  启动:      run.bat        停止:  stop.bat
+# ============================================================
+
+# 继承官方默认配置，移除用不了的引擎
+use_default_settings:
+  engines:
+    # ahmia / torch 是暗网(.onion)搜索引擎，需要本机跑着 Tor 才能用。
+    # 没装 Tor 时它们启动会刷两条 ERROR，移除保持日志干净。
+    #
+    # brave：HTML 端点挂了 AWS WAF，对**数据中心 IP** 一律下发 CAPTCHA
+    #（实测东京节点、美国节点都是 HTTP 405 + x-amzn-waf-action: captcha，
+    #  换节点无用 —— 拦的是机房 IP 段而不是地区）。
+    # 它拿不到任何结果，每次搜索却白挂一条「brave: HTTP 错误」的噪声 → 移除。
+    #
+    # ⚠️ 必须**整个家族一起移除**：brave.images / brave.videos / brave.news
+    #    通过 `network: brave` 引用主引擎（主引擎会顺带把自己注册成一个网络）。
+    #    只移除主引擎 brave → 子引擎引用不到 → 启动直接 KeyError: 'brave'。
+    remove:
+      - ahmia
+      - torch
+      - brave
+      - brave.images
+      - brave.videos
+      - brave.news
+
+general:
+  instance_name: "SearXNG"
+  # 默认是 true，个人自用不需要统计，关掉
+  enable_metrics: false
+  donation_url: false
+  contact_url: false
+
+server:
+  # 只监听本机回环，外部访问不到
+  bind_address: "127.0.0.1"
+  port: 8888
+  # ⚠️ 必须替换掉默认的 ultrasecretkey，否则 SearXNG 会拒绝启动。
+  #    随便生成一串随机字符即可：
+  #      python -c "import secrets; print(secrets.token_hex(32))"
+  secret_key: "CHANGE_ME_generate_a_random_string_before_first_run"
+  # limiter 是 SearXNG 唯一需要 Redis/Valkey 的功能。
+  # 个人自用不需要限流防护，关掉它 → 本机完全不必装 Redis。
+  limiter: false
+  public_instance: false
+  image_proxy: false
+  method: "GET"
+
+search:
+  safe_search: 0
+  autocomplete: ""
+  default_lang: "auto"
+  # 多开一个 json 格式，方便脚本/程序直接调接口
+  formats:
+    - html
+    - json
+
+ui:
+  # 简体中文。合法值必须是完整区域码（zh-Hans-CN / zh-Hant-TW / zh-HK），
+  # 写成 "zh-Hans" 会被拒绝并导致 500。想用英文改成 "en" 即可。
+  default_locale: "zh-Hans-CN"
+
+outgoing:
+  request_timeout: 10.0
+  max_request_timeout: 20.0
+  # ⚠️ 代理地址，改成你自己的。
+  #    7897 是 Clash Verge 的默认混合端口；换别的代理软件要换端口
+  #    （Clash for Windows 常见 7890，v2rayN 常见 10809）。
+  #    不配这个的话，Google / Bing / DuckDuckGo 这类境外引擎会全部超时连不上。
+  proxies: "http://127.0.0.1:7897"

@@ -6,14 +6,6 @@ __pycache__/
 # Playwright 持久化 profile（含登录态 cookie，绝不入库）
 browser_data/
 
-# 开发档案：开发过程、踩坑、环境细节，只留本地不对外
-local_search_memory.md
-CODE_REVIEW.md
-
-# WorkBuddy 工作区数据：记忆留本地，skills 随仓库分发
-.workbuddy-ai/*
-!.workbuddy-ai/skills/
-
 # 嵌入式 Python（setup.bat 生成，不入库；离线包走 GitHub Releases）
 python_embed/
 python-embed.zip
@@ -23,9 +15,6 @@ get-pip.py
 # 本机配置（模板 config.bat.example 入库）
 config.bat
 
-# 停止跟踪的说明文件（保留本地，不再入库）
-ISSUES.md
-
 # 编辑器个人配置
 .vscode/
 
@@ -33,6 +22,4 @@ ISSUES.md
 *.log
 out.md
 out.txt
-
-# 浏览器调试截图（bro_search.py 的 _debug_shots/）
-_debug_shots/
+out/

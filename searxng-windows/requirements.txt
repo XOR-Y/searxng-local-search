@@ -1,0 +1,26 @@
+# SearXNG 官方依赖（照抄官方 requirements.txt）
+certifi==2026.7.22
+babel==2.18.0
+flask-babel==4.0.0
+flask==3.1.3
+jinja2==3.1.6
+lxml==6.1.3
+pygments==2.21.0
+python-dateutil==2.9.0.post0
+pyyaml==6.0.3
+curl_cffi==0.16.3
+valkey==6.1.1
+markdown-it-py==4.2.0
+msgspec==0.22.0
+typer==0.27.2
+isodate==0.7.2
+whitenoise==6.12.0
+typing-extensions==4.16.0
+
+# ── Windows 移植额外需要 ────────────────────────────────
+# waitress：替代 uWSGI 的 WSGI 服务器（uWSGI 不支持 Windows）
+waitress==3.0.2
+# tzdata：Windows 没有系统时区数据库（Linux 有 /usr/share/zoneinfo），
+#         而 bilibili 等引擎要用 ZoneInfo("Asia/Shanghai")，缺了会报
+#         ZoneInfoNotFoundError
+tzdata==2026.5

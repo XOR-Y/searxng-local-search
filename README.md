@@ -1,9 +1,11 @@
 # ☆*: .｡. o(≧▽≦)o .｡.:*☆
 
 > 本仓库是自建的**本地搜索工具链**：不限次数的网页搜索 + 正文抓取，全部跑在自己机器上。
-> 另存有一份历史参考实现 `bro_search.py`（浏览器自动化 MCP，**不启用**），见文末。
 
 ## 快速开始
+
+> 🔧 **首次安装请看 [`INSTALL.md`](INSTALL.md)** —— 含 SearXNG 的 Windows 原生移植教程。
+> 下面这几步假设你已经装好 SearXNG 服务端。
 
 ```bat
 setup.bat                                   :: 首次准备（只做一次，生成 python_embed\）
@@ -12,7 +14,7 @@ fetch.bat "https://..." --max 4000          :: 2) 读正文
 fetch.bat "https://..." --render            :: 需要 JS 渲染时走浏览器慢路径
 ```
 
-> ⚠️ **`searx.bat` 必须显式传 `--lang`**，否则结果语言会跟随代理出口节点（当前节点在日本就返回日文结果）。
+> ⚠️ **`searx.bat` 建议显式传 `--lang`**，否则结果语言会跟随代理出口节点（出口在日本就会返回日文结果）。
 > 📦 **SearXNG 服务端不随本仓库分发**，它是独立目录 `searxng-official`（与本仓库**同级**，**Windows 原生版**，自带 `.venv`）：双击其中的 `run.bat` 即可启动，**无需 WSL / Docker / 虚拟机**。
 > ⚠️ **Python 环境就在本仓库**：`python_embed\`（由 `setup.bat` 首次生成，约 210MB，**不进 git**）。不需要系统 Python、不需要 venv。
 
@@ -87,26 +89,17 @@ fetch.bat "https://..." --render            :: 需要 JS 渲染时走浏览器�
 
 ---
 
-## 历史参考：`bro_search.py`
+## 关于浏览器渲染（`--render`）
 
-> ⏸️ **参考实现，不启用。** 它没有被注册进任何 MCP 客户端；日常使用请走 `searx.bat` / `fetch.bat`。
+`fetch.py --render` 走 **Playwright + 系统 Edge**（`fetcher/browser.py` 里 `channel="msedge"`）。
 
-原项目主体：基于 **Playwright + FastMCP** 的浏览器自动化 MCP 服务器（服务器名 `LocalBrowserCommander`，10 个工具，`stdio` 传输）。它也是现役 `fetch.py --render` 的**来源** —— 持久化 context、反检测注入脚本都从这里抽走。能力已被取代：
+> ✅ **不需要** `playwright install chromium` —— 直接用你系统里已装的 Edge，**零浏览器下载**。
 
-| 原工具 | 现役替代 |
-|---|---|
-| `search` | `searx.bat` |
-| `open_url` / `smart_browse` | `fetch.bat`（必要时加 `--render`） |
-| `page_action` / `tab_manager` / `run_javascript` … | `agent-browser` / `playwright-cli` skill |
-
-**核心特性**（仅存档描述）：持久化浏览器上下文 / 反检测伪装 / 搜索偏好预设 / 隐私保护 / 崩溃自动恢复。
-
-**若要启用**（可选，默认不做）：
+如果你想改用 Playwright 自带的 Chromium：
 
 ```bat
-python_embed\python.exe -m pip install "mcp[cli]"
+python_embed\python.exe -m playwright install chromium
 ```
 
-> ⚠️ `mcp[cli]` **不在 `requirements.txt` 里**，也没有注册进任何 MCP 客户端。
-> ⚠️ **不需要** `playwright install chromium` —— 本项目用 `channel="msedge"` 驱动**系统已装的 Edge**，零浏览器下载。
-> （Playwright 1.63 要求 `chromium-1243`，本机只有旧的 `chromium-1208`，对不上；用 Edge 绕开。）
+然后把 `fetcher/browser.py` 里的 `channel="msedge"` 去掉即可。
+
