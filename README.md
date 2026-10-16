@@ -103,3 +103,9 @@ python_embed\python.exe -m playwright install chromium
 
 然后把 `fetcher/browser.py` 里的 `channel="msedge"` 去掉即可。
 
+---
+
+## 许可证
+
+[Apache License 2.0](LICENSE) © 2026 XOR-Y
+

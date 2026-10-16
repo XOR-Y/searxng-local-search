@@ -37,3 +37,6 @@
 *.db    binary
 *.pyd   binary
 *.exe   binary
+
+# ---- 无扩展名的文本文件 ----
+LICENSE         text eol=lf

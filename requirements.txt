@@ -6,7 +6,7 @@
 # 手工装法（python_embed 已就绪时）：
 #   python_embed\python.exe -m pip install -r requirements.txt
 #
-# 版本按 2026-09-28 实测环境冻结。完整实测数据见 .workbuddy-ai/memory/local_search_memory.md
+# 版本按实测环境（Python 3.13 / Windows）冻结。
 
 # --- 搜索入口 searx.py ---
 # 无第三方依赖，只用标准库（urllib / subprocess / json / argparse）
@@ -28,7 +28,3 @@ playwright==1.63.0
 #
 # ⚠️ 装完 playwright 后【不需要】跑 `playwright install chromium`：
 #    本项目用 channel="msedge" 驱动**系统已装的 Edge**，零浏览器下载。
-#    （Playwright 1.63 要求 chromium-1243，本机只有旧的 chromium-1208，对不上；用 Edge 绕开。）
-
-# 注：bro_search.py（浏览器 MCP 服务器）的依赖不同，另见 README：
-#   pip install "mcp[cli]" playwright
